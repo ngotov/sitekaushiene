@@ -123,20 +123,6 @@ function App() {
           </div>
         </Section>
 
-        <Section id="personal" title="личные сессии">
-          <div className="servicePanel">
-            <p>Личный формат работы для тех, кто хочет разобрать свой запрос глубоко, честно и индивидуально: деньги, выбор, отношения, проявленность, масштаб, внутренние ограничения и разрешение жить как хочется.</p>
-            <a className="btn small" href="#contact">ОСТАВИТЬ ЗАПРОС</a>
-          </div>
-        </Section>
-
-        <Section id="groups" title="групповые сессии">
-          <div className="servicePanel">
-            <p>Групповой формат для работы с мышлением, денежными сценариями, архетипами, женской силой, ресурсом и поддержкой в круге людей с похожим запросом.</p>
-            <a className="btn small" href="#contact">ОСТАВИТЬ ЗАПРОС</a>
-          </div>
-        </Section>
-
         <Section id="programs" title="курсы онлайн">
           <div className="programGrid">
             {programs.map((program, index) => (
