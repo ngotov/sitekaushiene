@@ -1,3 +1,8 @@
+const tuningStyles = document.createElement('link');
+tuningStyles.rel = 'stylesheet';
+tuningStyles.href = 'hero-tuning.css';
+document.head.appendChild(tuningStyles);
+
 const toggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
 

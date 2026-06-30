@@ -1,0 +1,56 @@
+@media (min-width: 1400px) {
+  :root {
+    --max: 1520px;
+  }
+
+  .site-header {
+    grid-template-columns: 280px 1fr;
+    min-height: 86px;
+    padding-block: 16px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .main-nav {
+    gap: clamp(20px, 1.5vw, 34px);
+    font-size: 13px;
+  }
+
+  .hero {
+    min-height: calc(100vh - 86px);
+    grid-template-columns: 1.08fr .92fr;
+    padding-block: 52px 58px;
+  }
+
+  .hero-copy {
+    padding: 22px 78px 0 0;
+  }
+
+  .hero h1 {
+    margin: 28px 0 40px;
+    font-size: clamp(118px, 7vw, 158px);
+  }
+
+  .hero-facts {
+    max-width: 850px;
+    column-gap: 58px;
+    font-size: 15.5px;
+  }
+
+  .hero-facts li {
+    padding: 10px 0;
+  }
+
+  .hero-media {
+    min-height: calc(100vh - 196px);
+    max-height: 1060px;
+  }
+
+  .text-link {
+    margin-top: 54px;
+    padding-top: 0;
+    font-size: 13px;
+  }
+}
