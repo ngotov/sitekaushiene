@@ -1,8 +1,23 @@
 import { useState } from 'react';
-import type { ReactNode } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import { about, before, conferences, freeProducts, heroFacts, idea, nav, programs, reviews, today } from './content';
+import {
+  about,
+  aboutVideo,
+  before,
+  conferences,
+  conferencesIntro,
+  editorialLink,
+  formText,
+  freeProducts,
+  heroFacts,
+  ideaParagraphs,
+  nav,
+  programs,
+  reviewsLink,
+  today,
+} from './content';
 
 const heroPhoto = `${import.meta.env.BASE_URL}images/foto_1_blok.png`;
 
@@ -48,9 +63,7 @@ function App() {
             <p className="eyebrow">Наталья Галюк-Каушене</p>
             <h1>ЖИВУ как хочу!</h1>
             <ul className="factList">
-              {heroFacts.map((fact) => (
-                <li key={fact}>{fact}</li>
-              ))}
+              {heroFacts.map((fact) => <li key={fact}>{fact}</li>)}
             </ul>
             <a className="btn" href="#contact">СВЯЗАТЬСЯ СО МНОЙ</a>
           </div>
@@ -61,10 +74,11 @@ function App() {
 
         <Section id="about" title="кто я?">
           <div className="aboutGrid">
-            <div>
-              {about.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            </div>
-            <div className="videoCard"><span>▶</span><p>визитка / видео</p></div>
+            <div>{about.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+            <a className="videoCard" href={aboutVideo} target="_blank" rel="noreferrer">
+              <span>▶</span>
+              <p>смотреть видео</p>
+            </a>
           </div>
         </Section>
 
@@ -80,18 +94,21 @@ function App() {
         </Section>
 
         <Section id="idea" title="моя главная идея сегодня">
-          <p className="quote">{idea}</p>
+          <div className="ideaText">{ideaParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
         </Section>
 
         <Section id="speaker" title="спикер международных конференций">
+          <div className="introBlock">{conferencesIntro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
           <div className="speakerGrid">
-            {conferences.map((item, index) => (
-              <article key={item}>
+            {conferences.map(([title, text], index) => (
+              <article key={title}>
                 <div className="thumb">{String(index + 1).padStart(2, '0')}</div>
-                <h4>{item}</h4>
+                <h4>{title}</h4>
+                <p>{text}</p>
               </article>
             ))}
           </div>
+          <a className="btn small" href="#contact">ПРИГЛАСИТЬ КАК СПИКЕРА</a>
         </Section>
 
         <Section id="free" title="бесплатные продукты">
@@ -106,42 +123,59 @@ function App() {
           </div>
         </Section>
 
-        <Section id="programs" title="онлайн-программы">
+        <Section id="personal" title="личные сессии">
+          <div className="servicePanel">
+            <p>Личный формат работы для тех, кто хочет разобрать свой запрос глубоко, честно и индивидуально: деньги, выбор, отношения, проявленность, масштаб, внутренние ограничения и разрешение жить как хочется.</p>
+            <a className="btn small" href="#contact">ОСТАВИТЬ ЗАПРОС</a>
+          </div>
+        </Section>
+
+        <Section id="groups" title="групповые сессии">
+          <div className="servicePanel">
+            <p>Групповой формат для работы с мышлением, денежными сценариями, архетипами, женской силой, ресурсом и поддержкой в круге людей с похожим запросом.</p>
+            <a className="btn small" href="#contact">ОСТАВИТЬ ЗАПРОС</a>
+          </div>
+        </Section>
+
+        <Section id="programs" title="курсы онлайн">
           <div className="programGrid">
-            {programs.map(([title, type, text], index) => (
-              <article key={title}>
+            {programs.map((program, index) => (
+              <article key={program.title}>
                 <div className="programPic">{index + 1}</div>
-                <p className="eyebrow">{type}</p>
-                <h4>{title}</h4>
-                <p>{text}</p>
-                <a href="#contact">УЗНАТЬ ПОДРОБНОСТИ</a>
+                <p className="eyebrow">{program.format}</p>
+                <h4>{program.title}</h4>
+                <p>{program.duration}</p>
+                <p>{program.price}</p>
+                <p>{program.description}</p>
+                <a href="#contact">{program.button}</a>
               </article>
             ))}
           </div>
         </Section>
 
-        <section className="editorial" aria-label="Визуальная пауза">
-          <img src={heroPhoto} alt="Наталья Галюк-Каушене" />
+        <section className="editorial" aria-label="Дополнительный фотоблок">
+          <a className="photoLink" href={editorialLink} target="_blank" rel="noreferrer">открыть фотоматериал</a>
           <div>
-            <p className="eyebrow">Наталья Галюк-Каушене</p>
+            <p className="eyebrow">визуальная пауза</p>
             <h2>ЖИВУ как хочу!</h2>
           </div>
         </section>
 
-        <Section id="contact" title="связаться со мной" className="contact">
-          <p>Оставьте контакты, чтобы получить бесплатный продукт, записаться на программу или задать вопрос.</p>
-          <form onSubmit={(event) => { event.preventDefault(); alert('Спасибо! Форма подготовлена для подключения отправки.'); }}>
-            <input placeholder="Ваше имя" aria-label="Ваше имя" />
-            <input placeholder="Телефон / Telegram / email" aria-label="Контакт" />
-            <textarea placeholder="Ваш вопрос" aria-label="Ваш вопрос" />
-            <button className="btn" type="submit">ОТПРАВИТЬ</button>
+        <Section id="contact" title="контакты" className="contact">
+          <div>{formText.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+          <form onSubmit={(event: FormEvent<HTMLFormElement>) => { event.preventDefault(); alert('Спасибо! Ваш запрос подготовлен.'); }}>
+            <input placeholder="Имя" aria-label="Имя" />
+            <input placeholder="Телефон" aria-label="Телефон" />
+            <textarea placeholder="Сообщение" aria-label="Сообщение" />
+            <button className="btn" type="submit">ОТПРАВИТЬ ЗАПРОС</button>
           </form>
         </Section>
 
         <Section id="reviews" title="отзывы">
-          <div className="videoRow">
-            {reviews.map((review) => <div className="reviewVideo" key={review}>▶<span>{review}</span></div>)}
-          </div>
+          <a className="reviewsPanel" href={reviewsLink} target="_blank" rel="noreferrer">
+            <span>▶</span>
+            <p>Смотреть отзывы</p>
+          </a>
         </Section>
       </main>
       <footer>
