@@ -1,21 +1,156 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import {nav, heroFacts, about, before, today, conferences, freeProducts, programs, reviews} from './content';
+import { about, before, conferences, freeProducts, heroFacts, idea, nav, programs, reviews, today } from './content';
 
-const img = `${import.meta.env.BASE_URL}images/foto_1_blok.png`;
-function Header(){const [open,setOpen]=useState(false); return <header className="header"><a className="logo" href="#top">Наталья<br/>Галюк-Каушене</a><button className="burger" onClick={()=>setOpen(!open)} aria-label="Меню">☰</button><nav className={open?'open':''}>{nav.map(([id,t])=><a onClick={()=>setOpen(false)} href={`#${id}`} key={id}>{t}</a>)}</nav></header>}
-const Section=({id,title,children,cls=''}:{id:string,title?:string,children:React.ReactNode,cls?:string})=><section id={id} className={`section ${cls}`}>{title&&<h2>{title}</h2>}{children}</section>;
-function App(){return <><Header/><main id="top">
-<section className="hero"><div className="heroText"><p className="eyebrow">персональный сайт</p><h1>Наталья Галюк-Каушене</h1><p className="lead">Бережная психология для детей, родителей и взрослых, которым нужна ясность, опора и живой практический результат.</p><ul>{heroFacts.map(x=><li key={x}>{x}</li>)}</ul><a className="btn" href="#contact">СВЯЗАТЬСЯ СО МНОЙ</a></div><div className="heroPhoto"><img src={img} alt="Наталья Галюк-Каушене"/></div></section>
-<Section id="about" title="кто я?"><div className="aboutGrid"><div>{about.map(p=><p key={p}>{p}</p>)}<p><b>Я за то, чтобы психология была понятной, тёплой и применимой в реальной жизни.</b></p></div><div className="video"><span>▶</span><p>знакомство с Натальей</p></div></div></Section>
-<Section id="compare" cls="compare"><div><h3>Всего 3 года назад я бы представилась так:</h3><ul>{before.map(x=><li key={x}>{x}</li>)}</ul></div><div><h3>А сегодня я буду рада предстать перед вами так:</h3><ul>{today.map(x=><li key={x}>{x}</li>)}</ul></div></Section>
-<Section id="idea"><div className="quote">Говорят, если хочешь изменить жизнь — тянись к тем, кто бережно помогает увидеть себя и свои возможности каждый день.</div><p className="center">Я жду вас на консультациях, программах и практикумах. И я всегда на связи, чтобы помочь выбрать подходящий формат.</p></Section>
-<Section id="speaker" title="спикер международных конференций"><p className="intro">Участвую в профессиональных встречах, родительских клубах, онлайн-форумах и конференциях. Говорю о детском развитии, коммуникации, тревожности, родительской устойчивости и практической помощи семье.</p><div className="speakerGrid">{conferences.map((c,i)=><article key={c}><div className="thumb">{String(i+1).padStart(2,'0')}</div><h4>{c}</h4><p>Лекции, практические встречи и приглашённые выступления для родителей и специалистов.</p></article>)}</div><a className="btn small" href="#contact">ПРИГЛАСИТЬ КАК СПИКЕРА</a></Section>
-<Section id="free" title="БЕСПЛАТНЫЕ ПРОДУКТЫ"><div className="freeGrid">{freeProducts.map(p=><article key={p[0]}><h4>{p[0]}</h4><p>{p[1]}</p><a href="#contact">{p[2]}</a></article>)}</div></Section>
-<Section id="programs" title="онлайн-программы и практикумы"><div className="programGrid">{programs.map((p,i)=><article key={p[0]}><div className="programPic">{i+1}</div><h4>{p[0]}</h4><p>{p[1]}</p><p>{p[2]}</p><p>{p[3]}</p><a href="#contact">УЗНАТЬ ПОДРОБНОСТИ</a></article>)}</div></Section>
-<section className="editorial"><img src={img} alt="Наталья Галюк-Каушене"/><div><h2>Авторский подход</h2><p>Мягкая профессиональная работа без шаблонов: через разговор, наблюдение, упражнения и уважение к темпу человека.</p></div></section>
-<Section id="contact" title="СВЯЗАТЬСЯ СО МНОЙ" cls="contact"><p>Напишите свой запрос: что беспокоит, для кого нужна помощь и какой формат вам удобен. Я помогу подобрать консультацию, программу или практикум.</p><form onSubmit={e=>{e.preventDefault(); alert('Спасибо! Сообщение подготовлено.')}}><input placeholder="Ваше имя"/><input placeholder="Телефон или Telegram"/><textarea placeholder="Ваш запрос"/><button className="btn">ОТПРАВИТЬ СООБЩЕНИЕ</button></form></Section>
-<Section id="reviews" title="ОТЗЫВЫ"><div className="videoRow">{[1,2,3,4].map(n=><div className="reviewVideo" key={n}>▶<span>видеоотзыв</span></div>)}</div><div className="reviews">{reviews.map(r=><article key={r[0]}><h5>{r[0]}</h5><p>{r[1]}</p></article>)}</div></Section>
-</main><footer><b>Наталья Галюк-Каушене</b><p>Психологические консультации, программы и практикумы онлайн.</p><div><a href="#top">Наверх</a><a href="#contact">Контакты</a></div></footer></>}
-createRoot(document.getElementById('root')!).render(<App/>);
+const heroPhoto = `${import.meta.env.BASE_URL}images/foto_1_blok.png`;
+
+function Header() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="header">
+      <a className="logo" href="#top" onClick={() => setOpen(false)}>
+        Наталья<br />Галюк-Каушене
+      </a>
+      <button className="burger" onClick={() => setOpen(!open)} aria-label="Открыть меню" type="button">
+        <span />
+        <span />
+      </button>
+      <nav className={open ? 'open' : ''} aria-label="Основная навигация">
+        {nav.map(([id, title]) => (
+          <a href={`#${id}`} key={id} onClick={() => setOpen(false)}>
+            {title}
+          </a>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+function Section({ id, title, children, className = '' }: { id: string; title?: string; children: ReactNode; className?: string }) {
+  return (
+    <section id={id} className={`section ${className}`}>
+      {title ? <h2>{title}</h2> : null}
+      {children}
+    </section>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Header />
+      <main id="top">
+        <section className="hero">
+          <div className="heroText">
+            <p className="eyebrow">Наталья Галюк-Каушене</p>
+            <h1>ЖИВУ как хочу!</h1>
+            <ul className="factList">
+              {heroFacts.map((fact) => (
+                <li key={fact}>{fact}</li>
+              ))}
+            </ul>
+            <a className="btn" href="#contact">СВЯЗАТЬСЯ СО МНОЙ</a>
+          </div>
+          <div className="heroPhoto">
+            <img src={heroPhoto} alt="Наталья Галюк-Каушене" />
+          </div>
+        </section>
+
+        <Section id="about" title="кто я?">
+          <div className="aboutGrid">
+            <div>
+              {about.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            </div>
+            <div className="videoCard"><span>▶</span><p>визитка / видео</p></div>
+          </div>
+        </Section>
+
+        <Section id="compare" className="compare">
+          <div>
+            <h3>Всего 3 года назад…</h3>
+            <ul>{before.map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+          <div>
+            <h3>А сегодня…</h3>
+            <ul>{today.map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+        </Section>
+
+        <Section id="idea" title="моя главная идея сегодня">
+          <p className="quote">{idea}</p>
+        </Section>
+
+        <Section id="speaker" title="спикер международных конференций">
+          <div className="speakerGrid">
+            {conferences.map((item, index) => (
+              <article key={item}>
+                <div className="thumb">{String(index + 1).padStart(2, '0')}</div>
+                <h4>{item}</h4>
+              </article>
+            ))}
+          </div>
+        </Section>
+
+        <Section id="free" title="бесплатные продукты">
+          <div className="freeGrid">
+            {freeProducts.map(([title, text, cta]) => (
+              <article key={title}>
+                <h4>{title}</h4>
+                <p>{text}</p>
+                <a href="#contact">{cta}</a>
+              </article>
+            ))}
+          </div>
+        </Section>
+
+        <Section id="programs" title="онлайн-программы">
+          <div className="programGrid">
+            {programs.map(([title, type, text], index) => (
+              <article key={title}>
+                <div className="programPic">{index + 1}</div>
+                <p className="eyebrow">{type}</p>
+                <h4>{title}</h4>
+                <p>{text}</p>
+                <a href="#contact">УЗНАТЬ ПОДРОБНОСТИ</a>
+              </article>
+            ))}
+          </div>
+        </Section>
+
+        <section className="editorial" aria-label="Визуальная пауза">
+          <img src={heroPhoto} alt="Наталья Галюк-Каушене" />
+          <div>
+            <p className="eyebrow">Наталья Галюк-Каушене</p>
+            <h2>ЖИВУ как хочу!</h2>
+          </div>
+        </section>
+
+        <Section id="contact" title="связаться со мной" className="contact">
+          <p>Оставьте контакты, чтобы получить бесплатный продукт, записаться на программу или задать вопрос.</p>
+          <form onSubmit={(event) => { event.preventDefault(); alert('Спасибо! Форма подготовлена для подключения отправки.'); }}>
+            <input placeholder="Ваше имя" aria-label="Ваше имя" />
+            <input placeholder="Телефон / Telegram / email" aria-label="Контакт" />
+            <textarea placeholder="Ваш вопрос" aria-label="Ваш вопрос" />
+            <button className="btn" type="submit">ОТПРАВИТЬ</button>
+          </form>
+        </Section>
+
+        <Section id="reviews" title="отзывы">
+          <div className="videoRow">
+            {reviews.map((review) => <div className="reviewVideo" key={review}>▶<span>{review}</span></div>)}
+          </div>
+        </Section>
+      </main>
+      <footer>
+        <b>Наталья Галюк-Каушене</b>
+        <p>Мастер-коуч (MCC ICF), денежный психолог, ментор.</p>
+        <div><a href="#top">Наверх</a><a href="#contact">Контакты</a></div>
+      </footer>
+    </>
+  );
+}
+
+createRoot(document.getElementById('root')!).render(<App />);
